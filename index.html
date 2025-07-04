@@ -1,0 +1,3186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happybend Homecoming 2025 - Photo Hunt</title>
+    <meta name="description" content="Interactive family reunion scavenger hunt with real camera integration!">
+    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiSGFwcHliZW5kIEhvbWVjb21pbmcgMjAyNSIsInNob3J0X25hbWUiOiJIYXBweWJlbmQgSHVudCIsImRlc2NyaXB0aW9uIjoiRmFtaWx5IFJldW5pb24gUGhvdG8gSHVudCIsImRpc3BsYXkiOiJzdGFuZGFsb25lIiwic3RhcnRfdXJsIjoiLyIsInRoZW1lX2NvbG9yIjoiIzQ5N2JkMSIsImJhY2tncm91bmRfY29sb3IiOiIjZmZmZmZmIiwiaWNvbnMiOlt7InNyYyI6ImRhdGE6aW1hZ2Uvc3ZnK3htbDtiYXNlNjQsUEhOMlp5QjNhV1IwYUQwaU1qUWlJR2hsYVdkb2REMGlNalFpSUhodGJHNXpQU0pvZEhSd09pOHZkM2QzTG5jekxtOXlaeTh5TURBd0wzTjJaeUkrUEhSbGVIUWdlRDBpTVRJaUlIazlJakV5SWlCbWFXeHNQU0lqWmpZM01tWWlQakUyTzBwOFBDOTBaWGgwUGp3dmMzWm5QZz09Iiwic2l6ZXMiOiIyNHgyNCIsInR5cGUiOiJpbWFnZS9zdmcreG1sIn1dfQ==">
+    <style>
+        :root {
+            --primary-color: #4ecdc4;
+            --secondary-color: #ff6b6b;
+            --accent-color: #feca57;
+            --success-color: #27ae60;
+            --background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --text-primary: #333;
+            --text-secondary: #666;
+            --card-bg: white;
+            --shadow: rgba(0,0,0,0.1);
+            --border: #e9ecef;
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #4ecdc4;
+            --secondary-color: #ff6b6b;
+            --accent-color: #feca57;
+            --success-color: #27ae60;
+            --background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            --text-primary: #ffffff;
+            --text-secondary: #cccccc;
+            --card-bg: #2d3748;
+            --shadow: rgba(0,0,0,0.3);
+            --border: #4a5568;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: var(--background);
+            min-height: 100vh;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .game-container {
+            max-width: 400px;
+            width: 100%;
+            background: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px var(--shadow);
+            overflow: hidden;
+            animation: slideIn 0.8s ease-out;
+            position: relative;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            background: linear-gradient(45deg, var(--secondary-color), var(--accent-color), #ff9a9e);
+            background-size: 300% 300%;
+            animation: gradientShift 4s ease infinite;
+            padding: 25px 20px;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.95;
+        }
+
+        .header-controls {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .header-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 8px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .header-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.1);
+        }
+
+        .streak-counter {
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            background: linear-gradient(45deg, var(--secondary-color), var(--accent-color));
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            animation: glow 2s infinite;
+            cursor: pointer;
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 5px rgba(255, 107, 107, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(255, 107, 107, 0.8); }
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 20px;
+            background: linear-gradient(135deg, var(--card-bg), var(--card-bg));
+            border-bottom: 1px solid var(--border);
+            box-shadow: 0 2px 4px var(--shadow);
+        }
+
+        .stat {
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            padding: 8px 12px;
+            border-radius: 10px;
+            min-width: 50px;
+        }
+
+        .stat:hover {
+            transform: translateY(-2px);
+            background: rgba(78, 205, 196, 0.1);
+        }
+
+        .stat-number {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--primary-color);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        .achievements-bar {
+            padding: 15px 20px;
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .achievements-bar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .achievement-badge {
+            min-width: 55px;
+            text-align: center;
+            padding: 8px 6px;
+            border-radius: 12px;
+            background: var(--card-bg);
+            border: 2px solid var(--border);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .achievement-badge:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+
+        .achievement-badge.earned {
+            background: linear-gradient(45deg, var(--primary-color), #44a08d);
+            color: white;
+            animation: bounce 0.6s ease;
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 15px rgba(78, 205, 196, 0.4);
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .achievement-emoji {
+            font-size: 18px;
+            display: block;
+            margin-bottom: 4px;
+            line-height: 1;
+        }
+
+        .achievement-title {
+            font-size: 9px;
+            font-weight: bold;
+            line-height: 1.2;
+        }
+
+        .level-progress {
+            margin: 15px 20px;
+            background: var(--border);
+            border-radius: 10px;
+            height: 10px;
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px var(--shadow);
+        }
+
+        .level-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--secondary-color), var(--accent-color));
+            border-radius: 10px;
+            transition: width 0.5s ease;
+            width: 0%;
+            box-shadow: 0 2px 4px rgba(255, 107, 107, 0.3);
+        }
+
+        .level-text {
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin: 8px 20px 0;
+            font-weight: 500;
+        }
+
+        .sharing-tips {
+            background: linear-gradient(135deg, #e8f4fd, #f0f8ff);
+            padding: 15px 20px;
+            margin: 0 20px 20px;
+            border-radius: 12px;
+            border-left: 4px solid #3498db;
+            box-shadow: 0 2px 8px rgba(52, 152, 219, 0.1);
+        }
+
+        [data-theme="dark"] .sharing-tips {
+            background: linear-gradient(135deg, #1a2332, #2d3748);
+            border-left-color: #3498db;
+        }
+
+        .sharing-tips h3 {
+            font-size: 14px;
+            font-weight: bold;
+            color: #2980b9;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sharing-tips p {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .tab-container {
+            display: flex;
+            background: var(--border);
+            margin: 0 20px 20px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px var(--shadow);
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 15px 12px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+            font-size: 14px;
+            position: relative;
+        }
+
+        .tab-button.active {
+            background: linear-gradient(45deg, var(--primary-color), #44a08d);
+            color: white;
+            box-shadow: 0 2px 8px rgba(78, 205, 196, 0.3);
+        }
+
+        .tab-button:not(.active):hover {
+            background: rgba(78, 205, 196, 0.1);
+            color: var(--primary-color);
+        }
+
+        .challenges-container {
+            padding: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .challenge-filters {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+
+        .filter-btn {
+            padding: 6px 12px;
+            border: 2px solid var(--border);
+            background: var(--card-bg);
+            color: var(--text-secondary);
+            border-radius: 20px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .filter-btn.active {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+            background: rgba(78, 205, 196, 0.1);
+        }
+
+        .challenge-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 12px var(--shadow);
+            border-left: 4px solid var(--secondary-color);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .challenge-card:hover {
+            transform: translateY(-2px) scale(1.01);
+            box-shadow: 0 8px 20px var(--shadow);
+        }
+
+        .challenge-card.completed {
+            background: linear-gradient(135deg, var(--primary-color), #44a08d);
+            color: white;
+            border-left-color: var(--primary-color);
+            animation: completionPulse 0.6s ease;
+        }
+
+        .challenge-card.daily-bonus {
+            border-left-color: #f39c12;
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            color: white;
+        }
+
+        @keyframes completionPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .challenge-emoji {
+            font-size: 28px;
+            margin-bottom: 8px;
+            display: block;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .challenge-title {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+
+        .challenge-description {
+            font-size: 13px;
+            opacity: 0.8;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .challenge-meta {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .challenge-tag {
+            background: rgba(255,255,255,0.2);
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .challenge-points {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: var(--accent-color);
+            color: #333;
+            padding: 4px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .completed .challenge-points {
+            background: rgba(255,255,255,0.3);
+            color: white;
+        }
+
+        .challenge-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+
+        .challenge-btn {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .camera-btn {
+            background: #3498db;
+            color: white;
+            flex: 1;
+        }
+
+        .camera-btn:hover {
+            background: #2980b9;
+            transform: scale(1.05);
+        }
+
+        .complete-btn {
+            background: var(--success-color);
+            color: white;
+            flex: 1;
+        }
+
+        .complete-btn:hover {
+            background: #229954;
+            transform: scale(1.05);
+        }
+
+        .share-btn {
+            background: #405de6;
+            color: white;
+            flex: 1;
+        }
+
+        .share-btn:hover {
+            background: #3643d4;
+            transform: scale(1.05);
+        }
+
+        .check-mark {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            display: none;
+            animation: checkIn 0.5s ease;
+        }
+
+        @keyframes checkIn {
+            0% { transform: scale(0) rotate(0deg); }
+            50% { transform: scale(1.2) rotate(180deg); }
+            100% { transform: scale(1) rotate(360deg); }
+        }
+
+        .completed .check-mark {
+            display: block;
+        }
+
+        .completed .challenge-points {
+            display: none;
+        }
+
+        .photo-gallery {
+            display: none;
+            padding: 20px;
+        }
+
+        .gallery-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 0 5px;
+        }
+
+        .gallery-header h3 {
+            margin: 0;
+            color: var(--text-secondary);
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .clear-all-btn {
+            padding: 8px 15px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .clear-all-btn:hover {
+            background: #c0392b;
+            transform: translateY(-1px);
+        }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 12px;
+            padding: 0 5px;
+        }
+
+        .photo-item {
+            aspect-ratio: 1;
+            background: var(--border);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .photo-item:hover {
+            transform: scale(1.05);
+        }
+
+        .photo-item img, .photo-item video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+
+        .action-buttons {
+            padding: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .action-buttons .btn {
+            flex: 1;
+            min-width: 100px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px 16px;
+            border: none;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 13px;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            min-height: 44px;
+            box-sizing: border-box;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255,255,255,0.3);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            transform: translate(-50%, -50%);
+        }
+
+        .btn:active::before {
+            width: 200px;
+            height: 200px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--primary-color), #44a08d);
+            color: white;
+            box-shadow: 0 4px 12px rgba(78, 205, 196, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(78, 205, 196, 0.4);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(45deg, var(--secondary-color), var(--accent-color));
+            color: white;
+            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(255, 107, 107, 0.4);
+        }
+
+        .camera-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .camera-content {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 350px;
+            width: 90%;
+            color: var(--text-primary);
+        }
+
+        .photo-editor-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1100;
+            padding: 20px;
+        }
+
+        .editor-content {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 20px;
+            max-width: 90%;
+            max-height: 90%;
+            overflow-y: auto;
+            color: var(--text-primary);
+        }
+
+        .filter-controls {
+            display: flex;
+            gap: 8px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-btn-editor {
+            padding: 8px 12px;
+            border: 2px solid var(--border);
+            background: var(--card-bg);
+            color: var(--text-primary);
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn-editor.active {
+            border-color: var(--primary-color);
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .media-toggle {
+            display: flex;
+            background: var(--border);
+            border-radius: 25px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        .media-mode-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .media-mode-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .video-container {
+            width: 100%;
+            height: 200px;
+            background: #000;
+            border-radius: 12px;
+            margin: 15px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #cameraVideo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        #recordingIndicator {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: #e74c3c;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+            display: none;
+            animation: pulse 1s infinite;
+        }
+
+        .camera-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .celebration-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .celebration-content {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 300px;
+            animation: bounceIn 0.6s ease-out;
+            color: var(--text-primary);
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.05); }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .trophy {
+            font-size: 60px;
+            margin-bottom: 15px;
+            animation: spin 2s infinite linear;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .leaderboard-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .leaderboard-content {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 20px;
+            max-width: 350px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            color: var(--text-primary);
+        }
+
+        .leaderboard-entry {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px;
+            margin-bottom: 10px;
+            background: var(--border);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .leaderboard-entry:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+
+        .leaderboard-entry.current-user {
+            background: linear-gradient(45deg, var(--primary-color), #44a08d);
+            color: white;
+        }
+
+        @media (max-width: 480px) {
+            .game-container {
+                margin: 5px;
+                border-radius: 15px;
+            }
+            
+            .header h1 {
+                font-size: 20px;
+            }
+            
+            .challenges-container {
+                max-height: 300px;
+                padding: 15px;
+            }
+            
+            .action-buttons {
+                padding: 15px;
+                flex-direction: column;
+            }
+            
+            .action-buttons .btn {
+                min-width: auto;
+                margin-bottom: 8px;
+            }
+            
+            .photo-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+
+            .header-controls {
+                flex-direction: column;
+                gap: 4px;
+            }
+            
+            .stat {
+                min-width: 40px;
+            }
+            
+            .stat-number {
+                font-size: 16px;
+            }
+            
+            .achievement-badge {
+                min-width: 45px;
+            }
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        *:focus {
+            outline: 2px solid var(--primary-color);
+            outline-offset: 2px;
+        }
+
+        .high-contrast {
+            filter: contrast(150%) brightness(120%);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <div class="header">
+            <div class="header-controls">
+                <button class="header-btn" onclick="toggleSound()" id="soundToggle" title="Toggle Sound">
+                    <span>🔊</span>
+                </button>
+                <button class="header-btn" onclick="toggleTheme()" id="themeToggle" title="Toggle Dark Mode">
+                    <span>🌙</span>
+                </button>
+                <button class="header-btn" onclick="toggleAccessibility()" id="accessibilityToggle" title="High Contrast Mode">
+                    <span>👁️</span>
+                </button>
+            </div>
+            <div class="streak-counter" id="streakCounter" onclick="showLeaderboard()">
+                🔥 0 Streak
+            </div>
+            <h1>📸 Happybend Homecoming 2025</h1>
+            <p>Interactive Instagram Scavenger Hunt!</p>
+        </div>
+
+        <div class="stats-bar">
+            <div class="stat" onclick="showStats()">
+                <div class="stat-number" id="score">0</div>
+                <div class="stat-label">Done</div>
+            </div>
+            <div class="stat" onclick="showStats()">
+                <div class="stat-number" id="points">0</div>
+                <div class="stat-label">Points</div>
+            </div>
+            <div class="stat" onclick="showStats()">
+                <div class="stat-number" id="level">1</div>
+                <div class="stat-label">Level</div>
+            </div>
+            <div class="stat" onclick="showStats()">
+                <div class="stat-number" id="photoCount">0</div>
+                <div class="stat-label">Photos</div>
+            </div>
+        </div>
+
+        <div class="achievements-bar" id="achievementsBar">
+            <div class="achievement-badge" data-achievement="first">
+                <span class="achievement-emoji">🎯</span>
+                <div class="achievement-title">First Shot</div>
+            </div>
+            <div class="achievement-badge" data-achievement="streak">
+                <span class="achievement-emoji">🔥</span>
+                <div class="achievement-title">Hot Streak</div>
+            </div>
+            <div class="achievement-badge" data-achievement="social">
+                <span class="achievement-emoji">👥</span>
+                <div class="achievement-title">Social Star</div>
+            </div>
+            <div class="achievement-badge" data-achievement="family">
+                <span class="achievement-emoji">👨‍👩‍👧‍👦</span>
+                <div class="achievement-title">Family Pro</div>
+            </div>
+            <div class="achievement-badge" data-achievement="creative">
+                <span class="achievement-emoji">🎨</span>
+                <div class="achievement-title">Creative</div>
+            </div>
+            <div class="achievement-badge" data-achievement="photographer">
+                <span class="achievement-emoji">📸</span>
+                <div class="achievement-title">Photo Pro</div>
+            </div>
+            <div class="achievement-badge" data-achievement="master">
+                <span class="achievement-emoji">🏆</span>
+                <div class="achievement-title">Master</div>
+            </div>
+        </div>
+
+        <div class="level-progress">
+            <div class="level-fill" id="levelFill"></div>
+        </div>
+        <div class="level-text" id="levelText">Complete 5 challenges to reach Level 2!</div>
+
+        <div class="sharing-tips">
+            <h3>📱 Hunt Instructions</h3>
+            <p>Post each completed task on Instagram using <strong>#HappybendHomecoming2025</strong><br>
+            Tag 1-2 family members in each photo. Complete challenges for points and achievements!</p>
+        </div>
+
+        <div class="tab-container">
+            <button class="tab-button active" onclick="showTab('challenges')" id="challengesTab">
+                🎯 Challenges
+            </button>
+            <button class="tab-button" onclick="showTab('gallery')" id="galleryTab">
+                📷 Gallery
+            </button>
+        </div>
+
+        <div class="challenges-container" id="challengesContainer">
+            <div class="challenge-filters">
+                <button class="filter-btn active" onclick="filterChallenges('all')" data-filter="all">All</button>
+                <button class="filter-btn" onclick="filterChallenges('family')" data-filter="family">Family</button>
+                <button class="filter-btn" onclick="filterChallenges('social')" data-filter="social">Social</button>
+                <button class="filter-btn" onclick="filterChallenges('creative')" data-filter="creative">Creative</button>
+                <button class="filter-btn" onclick="filterChallenges('candid')" data-filter="candid">Candid</button>
+                <button class="filter-btn" onclick="filterChallenges('bonus')" data-filter="bonus">Daily Bonus</button>
+            </div>
+            <!-- Challenges will be populated by JavaScript -->
+        </div>
+
+        <div class="photo-gallery" id="photoGallery" style="display: none;">
+            <div class="gallery-header">
+                <h3>📸 Your Media Collection</h3>
+                <button class="clear-all-btn" onclick="clearAllPhotos()" id="clearAllBtn" style="display: none;">
+                    🗑️ Clear All
+                </button>
+            </div>
+            <div class="photo-grid" id="photoGrid">
+                <!-- Photos will be added here -->
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <button class="btn btn-secondary" onclick="shuffleChallenges()">
+                🎲 New Hunt
+            </button>
+            <button class="btn btn-primary" onclick="shareScore()">
+                📱 Share Progress
+            </button>
+            <button class="btn" onclick="showLeaderboard()" style="background: #9b59b6; color: white;">
+                🏆 Leaderboard
+            </button>
+            <button class="btn" onclick="showOrganizerTools()" style="background: #e67e22; color: white;" title="Password protected organizer tools">
+                🔧 Organizer
+            </button>
+        </div>
+    </div>
+
+    <!-- Camera Modal -->
+    <div class="camera-modal" id="cameraModal">
+        <div class="camera-content">
+            <h3 style="margin-bottom: 15px;">📸 Capture Your Challenge</h3>
+            
+            <div class="media-toggle">
+                <button id="photoModeBtn" class="media-mode-btn active" onclick="switchToPhotoMode()">
+                    📸 Photo
+                </button>
+                <button id="videoModeBtn" class="media-mode-btn" onclick="switchToVideoMode()">
+                    🎥 Video
+                </button>
+            </div>
+            
+            <div class="video-container">
+                <video id="cameraVideo" autoplay muted></video>
+                <div id="recordingIndicator">
+                    🔴 REC <span id="recordingTime">0:00</span>
+                </div>
+            </div>
+            
+            <div class="camera-controls" id="photoControls">
+                <button class="btn btn-secondary" onclick="closeCamera()">Cancel</button>
+                <button class="btn btn-primary" onclick="capturePhoto()">📸 Capture</button>
+            </div>
+            
+            <div class="camera-controls" id="videoControls" style="display: none;">
+                <button class="btn btn-secondary" onclick="closeCamera()">Cancel</button>
+                <button class="btn" id="recordBtn" onclick="toggleRecording()" style="background: #e74c3c; color: white;">🎥 Record</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Photo Editor Modal -->
+    <div class="photo-editor-modal" id="photoEditorModal">
+        <div class="editor-content">
+            <h3 style="margin-bottom: 15px; text-align: center;">✨ Edit Your Photo</h3>
+            
+            <div style="text-align: center; margin-bottom: 15px;">
+                <img id="editingPhoto" style="max-width: 100%; max-height: 300px; border-radius: 12px;">
+                <canvas id="editingCanvas" style="display: none;"></canvas>
+            </div>
+            
+            <div class="filter-controls">
+                <button class="filter-btn-editor active" onclick="applyFilter('none')" data-filter="none">Original</button>
+                <button class="filter-btn-editor" onclick="applyFilter('sepia')" data-filter="sepia">Sepia</button>
+                <button class="filter-btn-editor" onclick="applyFilter('grayscale')" data-filter="grayscale">B&W</button>
+                <button class="filter-btn-editor" onclick="applyFilter('vintage')" data-filter="vintage">Vintage</button>
+                <button class="filter-btn-editor" onclick="applyFilter('bright')" data-filter="bright">Bright</button>
+                <button class="filter-btn-editor" onclick="applyFilter('contrast')" data-filter="contrast">High Contrast</button>
+            </div>
+            
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button class="btn btn-secondary" onclick="closePhotoEditor()" style="flex: 1;">Cancel</button>
+                <button class="btn btn-primary" onclick="saveEditedPhoto()" style="flex: 1;">💾 Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Celebration Popup -->
+    <div class="celebration-popup" id="celebrationPopup">
+        <div class="celebration-content">
+            <div class="trophy">🏆</div>
+            <h2 style="color: var(--secondary-color); margin-bottom: 10px;" id="celebrationTitle">Level Up!</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 20px;" id="celebrationText">Amazing work, photographer!</p>
+            <button onclick="closeCelebration()" class="btn btn-primary">Continue Hunting!</button>
+        </div>
+    </div>
+
+    <!-- Leaderboard Modal -->
+    <div class="leaderboard-modal" id="leaderboardModal">
+        <div class="leaderboard-content">
+            <h3 style="margin-bottom: 20px; text-align: center;">🏆 Family Leaderboard</h3>
+            <div id="leaderboardList">
+                <!-- Leaderboard entries will be populated here -->
+            </div>
+            <div style="text-align: center; margin-top: 20px;">
+                <button onclick="closeLeaderboard()" class="btn btn-primary">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Organizer Tools Modal -->
+    <div class="leaderboard-modal" id="organizerModal">
+        <div class="leaderboard-content" style="max-width: 450px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+                <h3 style="margin: 0;">🔧 Organizer Tools</h3>
+                <div style="background: var(--primary-color); color: white; padding: 4px 8px; border-radius: 8px; font-size: 10px;">
+                    🔐 PROTECTED
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 25px;">
+                <h4 style="color: var(--primary-color); margin-bottom: 15px;">📱 QR Code Setup</h4>
+                <p style="color: var(--text-secondary); font-size: 12px; line-height: 1.4; margin-bottom: 15px;">
+                    Print these QR codes and post them around your reunion. Family members scan them when they reach each milestone!
+                </p>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+                    <div style="text-align: center; padding: 15px; border: 2px solid var(--border); border-radius: 12px;">
+                        <div style="font-weight: bold; margin-bottom: 8px;">10 Challenges</div>
+                        <div id="qr10" style="margin: 10px 0;"></div>
+                        <button onclick="downloadQR('qr10', '10_Challenges')" style="font-size: 11px; padding: 5px 10px; background: var(--primary-color); color: white; border: none; border-radius: 15px; cursor: pointer;">
+                            💾 Download
+                        </button>
+                    </div>
+                    <div style="text-align: center; padding: 15px; border: 2px solid var(--border); border-radius: 12px;">
+                        <div style="font-weight: bold; margin-bottom: 8px;">25+ Challenges</div>
+                        <div id="qr25" style="margin: 10px 0;"></div>
+                        <button onclick="downloadQR('qr25', '25_Challenges')" style="font-size: 11px; padding: 5px 10px; background: var(--primary-color); color: white; border: none; border-radius: 15px; cursor: pointer;">
+                            💾 Download
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 25px;">
+                <h4 style="color: var(--secondary-color); margin-bottom: 15px;">🏆 Live Family Leaderboard</h4>
+                <div id="familyLeaderboard" style="max-height: 200px; overflow-y: auto; border: 1px solid var(--border); border-radius: 10px; padding: 15px;">
+                    <!-- Real family leaderboard will appear here -->
+                </div>
+                <div style="display: flex; gap: 10px; margin-top: 10px;">
+                    <button onclick="refreshFamilyLeaderboard()" style="flex: 1; padding: 10px; background: var(--secondary-color); color: white; border: none; border-radius: 20px; cursor: pointer;">
+                        🔄 Refresh
+                    </button>
+                    <button onclick="resetLeaderboard()" style="flex: 1; padding: 10px; background: #e74c3c; color: white; border: none; border-radius: 20px; cursor: pointer;">
+                        🗑️ Reset All
+                    </button>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <h4 style="color: var(--accent-color); margin-bottom: 10px;">📋 Instructions</h4>
+                <div style="background: var(--border); padding: 12px; border-radius: 8px; font-size: 11px; color: var(--text-secondary); line-height: 1.4;">
+                    <strong>🔐 Password Protection:</strong><br>
+                    • Default password: <code>happybend2025</code><br>
+                    • Change password in code line: <code>organizerPassword = 'yourpassword'</code><br><br>
+                    <strong>Setup:</strong><br>
+                    1. Download and print both QR codes<br>
+                    2. Post them around reunion (tables, food area, etc.)<br>
+                    3. Tell family: "Scan QR codes when you hit milestones!"<br><br>
+                    <strong>During Reunion:</strong><br>
+                    • Check this dashboard to see live rankings<br>
+                    • Use "Refresh" to update leaderboard manually<br>
+                    • Use "Reset All" to clear leaderboard (new day/event)<br>
+                    • Remove individual members with the ❌ button<br>
+                    • Encourage competitive family members!
+                </div>
+            </div>
+            
+            <div style="text-align: center;">
+                <button onclick="closeOrganizerTools()" class="btn btn-primary">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Check-in Success Modal -->
+    <div class="celebration-popup" id="checkinModal">
+        <div class="celebration-content">
+            <div style="font-size: 60px; margin-bottom: 15px;">🎯</div>
+            <h2 style="color: var(--primary-color); margin-bottom: 10px;" id="checkinTitle">Checked In!</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 20px;" id="checkinText">You've been added to the family leaderboard!</p>
+            <button onclick="closeCheckin()" class="btn btn-primary">Continue Hunting!</button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+    <script>
+        const challenges = [
+            // Family Challenges
+            { emoji: "👨‍👩‍👧‍👦", title: "Generations Pic", description: "Take a picture with three or more generations in one shot", points: 15, category: "family", difficulty: "medium" },
+            { emoji: "👯", title: "Family Doppelgänger", description: "Find your lookalike cousin/relative - side-by-side selfie", points: 12, category: "social", difficulty: "easy" },
+            { emoji: "📷", title: "Throwback Twins", description: "Recreate an old family photo with same people & poses", points: 20, category: "creative", difficulty: "hard" },
+            { emoji: "📖", title: "Storytime Moment", description: "Film elder sharing a fun or wild family story", points: 18, category: "family", difficulty: "medium" },
+            { emoji: "👥", title: "Cousin Chaos", description: "Group photo of all cousins - oldest to youngest!", points: 15, category: "family", difficulty: "medium" },
+            { emoji: "💎", title: "Family Heirloom Find", description: "Snap pic of something old and meaningful (photo, ring, etc.)", points: 15, category: "family", difficulty: "medium" },
+            { emoji: "🎤", title: "Under the Table Interview", description: "Record a kid interviewing an elder — silly questions encouraged!", points: 18, category: "family", difficulty: "medium" },
+            { emoji: "🍲", title: "Family Recipe Reveal", description: "Post a dish and share the secret family recipe", points: 10, category: "family", difficulty: "easy" },
+            { emoji: "💬", title: "Generational Wisdom", description: "Post a one-sentence quote from a family elder about life, love, or family", points: 15, category: "family", difficulty: "easy" },
+            { emoji: "🌳", title: "Family Tree Detective", description: "Ask someone about a family ancestor and post a fun fact or mini story", points: 15, category: "family", difficulty: "medium" },
+
+            // Social Challenges  
+            { emoji: "📛", title: "Name Match", description: "Find someone with same first name - selfie together!", points: 10, category: "social", difficulty: "easy" },
+            { emoji: "👕", title: "Family Crest/Outfit Match", description: "Matching reunion shirts or colors group shot", points: 8, category: "social", difficulty: "easy" },
+            { emoji: "🔥", title: "Sibling Roast", description: "Record a quick good-natured roast about sibling/cousin", points: 12, category: "social", difficulty: "medium" },
+            { emoji: "👟", title: "Matching Shoes Madness", description: "Find a family member wearing the same style shoes and snap a pic together", points: 10, category: "social", difficulty: "easy" },
+            { emoji: "👗", title: "Family Fashion Icon", description: "Find the best-dressed person at the reunion and do a mini photo shoot", points: 12, category: "social", difficulty: "easy" },
+            { emoji: "🎯", title: "Hidden Talent Discovery", description: "Post a 10-second video of someone doing something unexpected", points: 15, category: "social", difficulty: "medium" },
+            { emoji: "💝", title: "Candid Kindness", description: "Catch someone doing something sweet or helpful, then post with a thank-you", points: 12, category: "social", difficulty: "easy" },
+            { emoji: "🏆", title: "Most Likely To...", description: "Take a selfie with someone and caption it with a 'Most Likely To...' award", points: 10, category: "social", difficulty: "easy" },
+
+            // Creative Challenges
+            { emoji: "🎭", title: "Talent Show-Off", description: "Capture a hidden talent: singing, dancing, backflips!", points: 15, category: "creative", difficulty: "medium" },
+            { emoji: "🤝", title: "Secret Handshake", description: "Make one up with cousin/sibling and film it in action", points: 12, category: "creative", difficulty: "medium" },
+            { emoji: "🤪", title: "Goofy Pose Squad", description: "Find the silliest pose group and snap it like you mean it", points: 10, category: "creative", difficulty: "easy" },
+            { emoji: "🎩", title: "Silly Hat Selfie", description: "Wear or create the silliest hat you can find and post it", points: 8, category: "creative", difficulty: "easy" },
+            { emoji: "💃", title: "Dance Battle Boomerang", description: "Record a 5-second dance battle — bonus points for moves from different generations", points: 15, category: "creative", difficulty: "medium" },
+            { emoji: "😂", title: "Meme Your Family", description: "Take a candid and turn it into a hilarious meme or caption", points: 12, category: "creative", difficulty: "medium" },
+            { emoji: "👑", title: "Reunion Royalty", description: "Crown someone the 'Queen/King of the Reunion' and give them a pretend royal portrait", points: 12, category: "creative", difficulty: "medium" },
+            { emoji: "📸", title: "Photo Bomb Challenge", description: "Try to sneak into someone else's photo without them noticing", points: 10, category: "creative", difficulty: "medium" },
+
+            // Candid Challenges
+            { emoji: "🍔", title: "BBQ Boss", description: "Get a pic of someone flipping burgers or manning the grill", points: 8, category: "candid", difficulty: "easy" },
+            { emoji: "🌅", title: "Sunset Shot", description: "Capture a beautiful moment from the end of the day", points: 10, category: "candid", difficulty: "easy" },
+            { emoji: "🍽️", title: "Before & After Plate", description: "Show your plate before food... and after you destroy it!", points: 8, category: "candid", difficulty: "easy" },
+            { emoji: "👶", title: "Name That Baby", description: "Post a childhood photo of a family member — first to guess correctly wins", points: 15, category: "candid", difficulty: "medium" },
+
+            // More Creative Challenges
+            { emoji: "🎵", title: "Family Karaoke Star", description: "Record someone singing their heart out to a favorite song", points: 14, category: "creative", difficulty: "medium" },
+            { emoji: "🏃", title: "Action Shot Master", description: "Capture someone mid-action - jumping, running, or playing", points: 12, category: "creative", difficulty: "medium" },
+            { emoji: "🎨", title: "Living Statue", description: "Get someone to pose like a statue for 30 seconds while you take artistic shots", points: 13, category: "creative", difficulty: "medium" },
+            { emoji: "🤹", title: "Skill Showcase", description: "Film someone demonstrating a special skill or hobby", points: 16, category: "creative", difficulty: "medium" },
+            { emoji: "📺", title: "Family TV Show", description: "Create a 30-second 'episode' starring family members", points: 20, category: "creative", difficulty: "hard" },
+
+            // More Family Challenges
+            { emoji: "👴", title: "Wisdom Exchange", description: "Record a grandparent teaching a skill to a grandchild", points: 17, category: "family", difficulty: "medium" },
+            { emoji: "🏠", title: "Family Home Stories", description: "Get someone to share a memory about their childhood home", points: 14, category: "family", difficulty: "easy" },
+            { emoji: "🎂", title: "Birthday Memories", description: "Find someone and recreate their most memorable birthday photo pose", points: 16, category: "family", difficulty: "medium" },
+            { emoji: "👨‍👧", title: "Parent-Child Copycat", description: "Capture a parent and child doing the exact same pose or expression", points: 13, category: "family", difficulty: "easy" },
+            { emoji: "🎁", title: "Gift Giving Moment", description: "Capture a spontaneous moment of someone giving or receiving something special", points: 15, category: "family", difficulty: "medium" },
+
+            // More Social Challenges
+            { emoji: "🗣️", title: "Accent Challenge", description: "Record family members from different regions showing off their accents", points: 14, category: "social", difficulty: "medium" },
+            { emoji: "🤳", title: "Selfie Train", description: "Create a chain of 6+ people taking selfies with each other", points: 18, category: "social", difficulty: "hard" },
+            { emoji: "📱", title: "Technology Teaching", description: "Capture a younger family member teaching an older one to use tech", points: 15, category: "social", difficulty: "medium" },
+
+            // More Candid Challenges
+            { emoji: "😴", title: "Peaceful Moment", description: "Capture someone in a quiet, peaceful moment - reading, napping, or thinking", points: 11, category: "candid", difficulty: "easy" },
+            { emoji: "🍰", title: "Sweet Tooth", description: "Catch someone's reaction to tasting something delicious", points: 9, category: "candid", difficulty: "easy" },
+            { emoji: "👀", title: "Surprise Reaction", description: "Capture someone's genuine surprise reaction to something unexpected", points: 14, category: "candid", difficulty: "medium" },
+            { emoji: "🤗", title: "Hug Collection", description: "Photograph 3 different types of hugs happening naturally", points: 16, category: "candid", difficulty: "medium" },
+
+            // Bonus/Special Challenges
+            { emoji: "⏰", title: "Speed Challenge", description: "Complete any 3 other challenges within 15 minutes", points: 25, category: "bonus", difficulty: "hard" },
+            { emoji: "🌟", title: "Golden Hour Magic", description: "Take a stunning photo during golden hour (sunset/sunrise)", points: 22, category: "bonus", difficulty: "medium" },
+            { emoji: "🎊", title: "Party Planner", description: "Organize and photograph a mini celebration for someone", points: 20, category: "bonus", difficulty: "hard" }
+        ];
+
+        let currentChallenges = [];
+        let completedChallenges = new Set();
+        let totalPoints = 0;
+        let currentLevel = 1;
+        let streak = 0;
+        let soundEnabled = true;
+        let darkMode = false;
+        let highContrast = false;
+        let achievements = new Set();
+        let photos = [];
+        let currentStream = null;
+        let currentChallengeIndex = null;
+        let mediaRecorder = null;
+        let recordedChunks = [];
+        let isRecording = false;
+        let recordingStartTime = null;
+        let recordingTimer = null;
+        let currentMode = 'photo';
+        let currentFilter = 'all';
+        let dailyBonusChallenges = new Set();
+        let editingPhotoIndex = null;
+        let userName = 'You';
+        let familyLeaderboard = [];
+        let hasCheckedIn = false;
+        let organizerPassword = 'happybend2025'; // Change this to your preferred password
+
+        // Check for QR code check-in on page load
+        function checkForCheckin() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const checkinLevel = urlParams.get('checkin');
+            const name = urlParams.get('name');
+            
+            if (checkinLevel && !hasCheckedIn) {
+                const level = parseInt(checkinLevel);
+                if (completedChallenges.size >= level) {
+                    showNamePrompt(level);
+                } else {
+                    showMiniCelebration(`Complete ${level} challenges first, then scan this QR code again! (You have ${completedChallenges.size})`);
+                }
+            }
+        }
+
+        function showNamePrompt(level) {
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.8);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 3000;
+                padding: 20px;
+            `;
+            
+            modal.innerHTML = `
+                <div style="background: var(--card-bg); padding: 30px; border-radius: 20px; text-align: center; max-width: 350px; width: 100%; color: var(--text-primary);">
+                    <h3 style="margin-bottom: 15px;">🎯 Check-in to Leaderboard</h3>
+                    <p style="margin-bottom: 20px; color: var(--text-secondary);">
+                        You've completed ${level}+ challenges! Enter your name to join the family leaderboard:
+                    </p>
+                    <input type="text" id="nameInput" placeholder="Enter your name..." style="width: 100%; padding: 12px; border: 2px solid var(--border); border-radius: 10px; margin-bottom: 20px; font-size: 14px;">
+                    <div style="display: flex; gap: 10px;">
+                        <button onclick="this.parentElement.parentElement.parentElement.remove()" style="flex: 1; padding: 12px; background: var(--border); color: var(--text-secondary); border: none; border-radius: 20px; cursor: pointer;">
+                            Skip
+                        </button>
+                        <button onclick="submitCheckin(${level})" style="flex: 1; padding: 12px; background: var(--primary-color); color: white; border: none; border-radius: 20px; cursor: pointer;">
+                            🏆 Join Leaderboard
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Focus the input
+            setTimeout(() => {
+                const input = document.getElementById('nameInput');
+                if (input) {
+                    input.focus();
+                    input.addEventListener('keypress', (e) => {
+                        if (e.key === 'Enter') {
+                            submitCheckin(level);
+                        }
+                    });
+                }
+            }, 100);
+        }
+
+        function submitCheckin(level) {
+            const nameInput = document.getElementById('nameInput');
+            const name = nameInput ? nameInput.value.trim() : '';
+            
+            if (!name) {
+                showMiniCelebration('Please enter your name to join the leaderboard!');
+                return;
+            }
+            
+            // Update local username
+            userName = name;
+            
+            // Add to family leaderboard
+            const playerData = {
+                name: name,
+                score: completedChallenges.size,
+                points: totalPoints,
+                level: currentLevel,
+                timestamp: Date.now(),
+                checkinLevel: level
+            };
+            
+            // Get existing family leaderboard
+            let familyData = JSON.parse(localStorage.getItem('familyLeaderboard') || '[]');
+            
+            // Remove any existing entry for this name
+            familyData = familyData.filter(player => player.name !== name);
+            
+            // Add new entry
+            familyData.push(playerData);
+            
+            // Save to localStorage
+            localStorage.setItem('familyLeaderboard', JSON.stringify(familyData));
+            familyLeaderboard = familyData;
+            
+            // Remove the modal
+            document.querySelector('[style*="position: fixed"][style*="z-index: 3000"]').remove();
+            
+            // Show success
+            showCheckinSuccess(name, level);
+            hasCheckedIn = true;
+            
+            // Clear URL parameters
+            const url = new URL(window.location);
+            url.searchParams.delete('checkin');
+            url.searchParams.delete('name');
+            window.history.replaceState({}, document.title, url);
+            
+            saveGameData();
+        }
+
+        function closeCheckin() {
+            document.getElementById('checkinModal').style.display = 'none';
+        }
+
+        function showCheckinSuccess(name, level) {
+            const modal = document.getElementById('checkinModal');
+            document.getElementById('checkinTitle').textContent = `Welcome ${name}!`;
+            document.getElementById('checkinText').textContent = `You've checked in with ${level}+ challenges completed! You're now on the family leaderboard.`;
+            modal.style.display = 'flex';
+        }
+
+        function showOrganizerTools() {
+            // Show password prompt first
+            showPasswordPrompt();
+        }
+
+        function showPasswordPrompt() {
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.8);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 3000;
+                padding: 20px;
+            `;
+            
+            modal.innerHTML = `
+                <div style="background: var(--card-bg); padding: 30px; border-radius: 20px; text-align: center; max-width: 350px; width: 100%; color: var(--text-primary);">
+                    <h3 style="margin-bottom: 15px;">🔐 Organizer Access</h3>
+                    <p style="margin-bottom: 20px; color: var(--text-secondary); font-size: 14px;">
+                        Enter the organizer password to access management tools:
+                    </p>
+                    <input type="password" id="passwordInput" placeholder="Enter password..." style="width: 100%; padding: 12px; border: 2px solid var(--border); border-radius: 10px; margin-bottom: 15px; font-size: 14px;">
+                    <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 20px; background: var(--border); padding: 10px; border-radius: 8px;">
+                        <strong>💡 Default password:</strong> happybend2025<br>
+                        <small>(Organizer can change this in the code)</small>
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <button onclick="this.parentElement.parentElement.parentElement.remove()" style="flex: 1; padding: 12px; background: var(--border); color: var(--text-secondary); border: none; border-radius: 20px; cursor: pointer;">
+                            Cancel
+                        </button>
+                        <button onclick="checkPassword()" style="flex: 1; padding: 12px; background: var(--primary-color); color: white; border: none; border-radius: 20px; cursor: pointer;">
+                            🔧 Access Tools
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Focus the input and handle Enter key
+            setTimeout(() => {
+                const input = document.getElementById('passwordInput');
+                if (input) {
+                    input.focus();
+                    input.addEventListener('keypress', (e) => {
+                        if (e.key === 'Enter') {
+                            checkPassword();
+                        }
+                    });
+                }
+            }, 100);
+        }
+
+        function checkPassword() {
+            const passwordInput = document.getElementById('passwordInput');
+            const enteredPassword = passwordInput ? passwordInput.value : '';
+            
+            if (enteredPassword === organizerPassword) {
+                // Correct password - close prompt and show organizer tools
+                document.querySelector('[style*="z-index: 3000"]').remove();
+                openOrganizerTools();
+                playSound(440, 0.2);
+            } else {
+                // Wrong password
+                showMiniCelebration('❌ Incorrect password! Ask the reunion organizer for access.');
+                passwordInput.value = '';
+                passwordInput.focus();
+                
+                // Add red border briefly
+                passwordInput.style.borderColor = '#e74c3c';
+                setTimeout(() => {
+                    passwordInput.style.borderColor = 'var(--border)';
+                }, 1000);
+                
+                playSound(200, 0.3);
+            }
+        }
+
+        function openOrganizerTools() {
+            const modal = document.getElementById('organizerModal');
+            modal.style.display = 'flex';
+            
+            // Generate QR codes
+            generateQRCodes();
+            
+            // Load family leaderboard
+            loadFamilyLeaderboard();
+        }
+
+        function closeOrganizerTools() {
+            document.getElementById('organizerModal').style.display = 'none';
+        }
+
+        function generateQRCodes() {
+            const baseUrl = window.location.href.split('?')[0];
+            
+            // Generate QR codes for 10 and 25+ challenges only
+            const levels = [10, 25];
+            
+            levels.forEach(level => {
+                const qrUrl = `${baseUrl}?checkin=${level}`;
+                const qrElement = document.getElementById(`qr${level}`);
+                
+                if (qrElement) {
+                    // Clear existing content
+                    qrElement.innerHTML = '';
+                    
+                    try {
+                        // Create QR code
+                        const qr = new QRious({
+                            element: document.createElement('canvas'),
+                            value: qrUrl,
+                            size: 120,
+                            foreground: '#333',
+                            background: '#fff'
+                        });
+                        
+                        qrElement.appendChild(qr.canvas);
+                    } catch (e) {
+                        // Fallback if QRious fails
+                        qrElement.innerHTML = `<div style="width: 120px; height: 120px; background: #f0f0f0; display: flex; align-items: center; justify-content: center; border: 2px solid #ddd; font-size: 10px; text-align: center; color: #666;">QR Code<br>${level} Challenges</div>`;
+                        console.log('QR generation failed, using fallback');
+                    }
+                }
+            });
+        }
+
+        function downloadQR(qrId, filename) {
+            const qrElement = document.getElementById(qrId);
+            const canvas = qrElement.querySelector('canvas');
+            
+            if (canvas) {
+                // Create download link
+                const link = document.createElement('a');
+                link.download = `Happybend_${filename}_QR.png`;
+                link.href = canvas.toDataURL();
+                link.click();
+                
+                showMiniCelebration(`📥 ${filename} QR code downloaded!`);
+            } else {
+                showMiniCelebration('❌ Could not download QR code. Try refreshing the organizer tools.');
+            }
+        }
+
+        function loadFamilyLeaderboard() {
+            familyLeaderboard = JSON.parse(localStorage.getItem('familyLeaderboard') || '[]');
+            renderFamilyLeaderboard();
+        }
+
+        function renderFamilyLeaderboard() {
+            const container = document.getElementById('familyLeaderboard');
+            
+            if (familyLeaderboard.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; color: var(--text-secondary); padding: 20px;">
+                        🏆 No family members checked in yet!<br><br>
+                        <small>Family members will appear here when they scan QR codes</small>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Sort by points (highest first)
+            const sortedFamily = [...familyLeaderboard].sort((a, b) => b.points - a.points);
+            
+            container.innerHTML = sortedFamily.map((player, index) => {
+                const timeAgo = getTimeAgo(player.timestamp);
+                return `
+                    <div style="display: flex; align-items: center; gap: 12px; padding: 10px; margin-bottom: 8px; background: ${index === 0 ? 'linear-gradient(45deg, #ffd700, #ffed4e)' : 'var(--border)'}; border-radius: 10px; ${index === 0 ? 'color: #333;' : ''}">
+                        <div style="font-size: 18px; font-weight: bold; min-width: 30px;">
+                            ${index === 0 ? '👑' : index === 1 ? '🥈' : index === 2 ? '🥉' : `#${index + 1}`}
+                        </div>
+                        <div style="flex: 1;">
+                            <div style="font-weight: bold; font-size: 14px;">${player.name}</div>
+                            <div style="font-size: 11px; opacity: 0.8;">
+                                ${player.score} challenges • ${player.points} pts • Level ${player.level}
+                            </div>
+                            <div style="font-size: 10px; opacity: 0.6;">
+                                Checked in ${timeAgo}
+                            </div>
+                        </div>
+                        <button onclick="removeFamilyMember('${player.name}')" style="background: rgba(255,0,0,0.7); color: white; border: none; border-radius: 50%; width: 24px; height: 24px; font-size: 12px; cursor: pointer;">×</button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function getTimeAgo(timestamp) {
+            const now = Date.now();
+            const diff = now - timestamp;
+            const minutes = Math.floor(diff / 60000);
+            const hours = Math.floor(minutes / 60);
+            
+            if (hours > 0) {
+                return `${hours}h ago`;
+            } else if (minutes > 0) {
+                return `${minutes}m ago`;
+            } else {
+                return 'just now';
+            }
+        }
+
+        function removeFamilyMember(name) {
+            if (confirm(`Remove ${name} from the leaderboard?`)) {
+                familyLeaderboard = familyLeaderboard.filter(player => player.name !== name);
+                localStorage.setItem('familyLeaderboard', JSON.stringify(familyLeaderboard));
+                renderFamilyLeaderboard();
+                showMiniCelebration(`${name} removed from leaderboard`);
+            }
+        }
+
+        function refreshFamilyLeaderboard() {
+            loadFamilyLeaderboard();
+            showMiniCelebration('🔄 Leaderboard refreshed!');
+            playSound(440, 0.1);
+        }
+
+        function resetLeaderboard() {
+            if (familyLeaderboard.length === 0) {
+                showMiniCelebration('Leaderboard is already empty!');
+                return;
+            }
+            
+            // Show confirmation dialog
+            const confirmModal = document.createElement('div');
+            confirmModal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.8);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 4000;
+                padding: 20px;
+            `;
+            
+            confirmModal.innerHTML = `
+                <div style="background: var(--card-bg); padding: 25px; border-radius: 20px; text-align: center; max-width: 350px; width: 100%; color: var(--text-primary);">
+                    <h3 style="margin-bottom: 15px; color: #e74c3c;">🗑️ Reset Entire Leaderboard?</h3>
+                    <div style="margin-bottom: 20px;">
+                        <div style="color: var(--text-secondary); margin-bottom: 15px;">
+                            This will permanently remove <strong>all ${familyLeaderboard.length} family members</strong> from the leaderboard.
+                        </div>
+                        <div style="background: var(--border); padding: 12px; border-radius: 8px; font-size: 12px; color: var(--text-secondary);">
+                            <strong>💡 Tip:</strong> Use this at the start of a new day, or if you need to start fresh. Family members can re-join by scanning QR codes again.
+                        </div>
+                    </div>
+                    <p style="color: var(--text-secondary); margin-bottom: 20px; line-height: 1.4;">
+                        Are you sure? This action cannot be undone.
+                    </p>
+                    <div style="display: flex; gap: 10px;">
+                        <button onclick="this.parentElement.parentElement.parentElement.remove()" class="btn" style="flex: 1; background: var(--border); color: var(--text-secondary);">
+                            Cancel
+                        </button>
+                        <button onclick="confirmResetLeaderboard(); this.parentElement.parentElement.parentElement.remove();" class="btn" style="flex: 1; background: #e74c3c; color: white;">
+                            🗑️ Reset All
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(confirmModal);
+        }
+
+        function confirmResetLeaderboard() {
+            const memberCount = familyLeaderboard.length;
+            
+            // Clear the family leaderboard
+            familyLeaderboard = [];
+            localStorage.setItem('familyLeaderboard', JSON.stringify([]));
+            
+            // Reset anyone's check-in status on this device
+            hasCheckedIn = false;
+            saveGameData();
+            
+            // Update the display
+            renderFamilyLeaderboard();
+            
+            // Show success message
+            showMiniCelebration(`🗑️ Leaderboard reset! Removed ${memberCount} family members.`);
+            playSound(200, 0.3);
+        }
+
+        // Load saved data on startup
+        function loadGameData() {
+            try {
+                const saved = localStorage.getItem('happybendHunt2025');
+                if (saved) {
+                    const data = JSON.parse(saved);
+                    completedChallenges = new Set(data.completedChallenges || []);
+                    totalPoints = data.totalPoints || 0;
+                    currentLevel = data.currentLevel || 1;
+                    streak = data.streak || 0;
+                    achievements = new Set(data.achievements || []);
+                    photos = data.photos || [];
+                    soundEnabled = data.soundEnabled !== undefined ? data.soundEnabled : true;
+                    darkMode = data.darkMode || false;
+                    userName = data.userName || 'You';
+                    dailyBonusChallenges = new Set(data.dailyBonusChallenges || []);
+                    hasCheckedIn = data.hasCheckedIn || false;
+                }
+            } catch (e) {
+                console.log('No saved data found, starting fresh');
+            }
+        }
+
+        // Save game data
+        function saveGameData() {
+            try {
+                const data = {
+                    completedChallenges: Array.from(completedChallenges),
+                    totalPoints,
+                    currentLevel,
+                    streak,
+                    achievements: Array.from(achievements),
+                    photos: photos.map(p => ({...p, blob: undefined})), // Don't save blob objects
+                    soundEnabled,
+                    darkMode,
+                    userName,
+                    dailyBonusChallenges: Array.from(dailyBonusChallenges),
+                    hasCheckedIn,
+                    lastSave: Date.now()
+                };
+                localStorage.setItem('happybendHunt2025', JSON.stringify(data));
+            } catch (e) {
+                console.log('Could not save game data');
+            }
+        }
+
+        // Apply theme
+        function applyTheme() {
+            document.body.setAttribute('data-theme', darkMode ? 'dark' : 'light');
+            const themeToggle = document.getElementById('themeToggle');
+            if (themeToggle) {
+                themeToggle.innerHTML = `<span>${darkMode ? '☀️' : '🌙'}</span>`;
+            }
+        }
+
+        // Sound effects using Web Audio API
+        function playSound(frequency, duration, type = 'sine') {
+            if (!soundEnabled) return;
+            
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.value = frequency;
+                oscillator.type = type;
+                
+                gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + duration);
+            } catch (e) {
+                console.log('Sound not available');
+            }
+        }
+
+        function playCompletionSound() {
+            playSound(523.25, 0.2);
+            setTimeout(() => playSound(659.25, 0.2), 100);
+            setTimeout(() => playSound(783.99, 0.3), 200);
+        }
+
+        function playLevelUpSound() {
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => playSound(440 + (i * 110), 0.1), i * 50);
+            }
+        }
+
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            const toggle = document.getElementById('soundToggle');
+            toggle.innerHTML = `<span>${soundEnabled ? '🔊' : '🔇'}</span>`;
+            
+            if (soundEnabled) {
+                playSound(440, 0.1);
+            }
+            saveGameData();
+        }
+
+        function toggleTheme() {
+            darkMode = !darkMode;
+            applyTheme();
+            saveGameData();
+            playSound(300, 0.1);
+        }
+
+        function toggleAccessibility() {
+            highContrast = !highContrast;
+            document.body.classList.toggle('high-contrast', highContrast);
+            const toggle = document.getElementById('accessibilityToggle');
+            toggle.innerHTML = `<span>${highContrast ? '🔆' : '👁️'}</span>`;
+            playSound(200, 0.1);
+        }
+
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+
+        function generateDailyBonuses() {
+            const today = new Date().toDateString();
+            const savedDay = localStorage.getItem('lastBonusDay');
+            
+            if (savedDay !== today) {
+                // New day, generate new bonus challenges
+                dailyBonusChallenges.clear();
+                const bonusCount = 3; // 3 daily bonus challenges
+                const eligibleChallenges = challenges.filter(c => c.category !== 'bonus');
+                const shuffled = shuffleArray(eligibleChallenges);
+                
+                for (let i = 0; i < bonusCount && i < shuffled.length; i++) {
+                    const challengeIndex = challenges.findIndex(c => c === shuffled[i]);
+                    if (challengeIndex >= 0) {
+                        dailyBonusChallenges.add(challengeIndex);
+                    }
+                }
+                
+                localStorage.setItem('lastBonusDay', today);
+                saveGameData();
+            }
+        }
+
+        function initializeGame() {
+            loadGameData();
+            applyTheme();
+            generateDailyBonuses();
+            
+            const shuffled = shuffleArray(challenges);
+            currentChallenges = shuffled;
+            renderChallenges();
+            updateStats();
+            checkAchievements();
+            
+            // Check for QR code check-in
+            checkForCheckin();
+            
+            // Service Worker registration for PWA
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('data:application/javascript;base64,' + btoa(`
+                    const CACHE_NAME = 'happybend-hunt-v1';
+                    self.addEventListener('install', () => self.skipWaiting());
+                    self.addEventListener('activate', () => self.clients.claim());
+                `)).catch(() => console.log('SW registration failed'));
+            }
+        }
+
+        function shuffleChallenges() {
+            const shuffled = shuffleArray(challenges);
+            currentChallenges = shuffled;
+            generateDailyBonuses();
+            renderChallenges();
+            updateStats();
+            
+            showMiniCelebration('🎲 New challenges loaded! Daily bonuses refreshed!');
+            playSound(440, 0.2);
+            saveGameData();
+        }
+
+        function filterChallenges(category) {
+            currentFilter = category;
+            
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.getAttribute('data-filter') === category) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            renderChallenges();
+            playSound(300, 0.1);
+        }
+
+        function renderChallenges() {
+            const container = document.getElementById('challengesContainer');
+            const filtersHTML = container.querySelector('.challenge-filters').outerHTML;
+            container.innerHTML = filtersHTML;
+
+            const filteredChallenges = currentChallenges.filter((challenge, index) => {
+                if (currentFilter === 'all') return true;
+                if (currentFilter === 'bonus') return dailyBonusChallenges.has(index);
+                return challenge.category === currentFilter;
+            });
+
+            filteredChallenges.forEach((challenge, arrayIndex) => {
+                const actualIndex = currentChallenges.findIndex(c => c === challenge);
+                const card = document.createElement('div');
+                let cardClasses = `challenge-card ${completedChallenges.has(actualIndex) ? 'completed' : ''}`;
+                
+                if (dailyBonusChallenges.has(actualIndex)) {
+                    cardClasses += ' daily-bonus';
+                }
+                
+                card.className = cardClasses;
+
+                const tags = [];
+                if (dailyBonusChallenges.has(actualIndex)) tags.push('Daily Bonus');
+                if (challenge.difficulty) tags.push(challenge.difficulty.toUpperCase());
+
+                card.innerHTML = `
+                    <span class="challenge-emoji">${challenge.emoji}</span>
+                    <div class="challenge-title">${challenge.title}</div>
+                    <div class="challenge-description">${challenge.description}</div>
+                    ${tags.length > 0 ? `
+                        <div class="challenge-meta">
+                            ${tags.map(tag => `<span class="challenge-tag">${tag}</span>`).join('')}
+                        </div>
+                    ` : ''}
+                    <div class="challenge-points">${dailyBonusChallenges.has(actualIndex) ? (challenge.points * 2) : challenge.points} pts${dailyBonusChallenges.has(actualIndex) ? ' (2x BONUS!)' : ''}</div>
+                    <div class="check-mark">✅</div>
+                    <div class="challenge-actions">
+                        <button class="challenge-btn camera-btn" onclick="openCamera(${actualIndex})">📸 Camera</button>
+                        <button class="challenge-btn complete-btn" onclick="toggleChallenge(${actualIndex})">
+                            ${completedChallenges.has(actualIndex) ? 'Undo' : 'Complete'}
+                        </button>
+                        ${completedChallenges.has(actualIndex) ? 
+                            `<button class="challenge-btn share-btn" onclick="shareChallenge(${actualIndex})">📱 Share</button>` : 
+                            ''
+                        }
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.getAttribute('data-filter') === currentFilter) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+
+        function openCamera(challengeIndex) {
+            currentChallengeIndex = challengeIndex;
+            const modal = document.getElementById('cameraModal');
+            const video = document.getElementById('cameraVideo');
+            
+            // Reset to photo mode
+            switchToPhotoMode();
+            
+            // Check if camera is available
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                showCameraFallback(challengeIndex);
+                return;
+            }
+            
+            // Show the modal first
+            modal.style.display = 'flex';
+            
+            // Request camera access
+            navigator.mediaDevices.getUserMedia({ 
+                video: { 
+                    facingMode: 'environment',
+                    width: { ideal: 1280 },
+                    height: { ideal: 720 }
+                },
+                audio: true
+            })
+                .then(stream => {
+                    currentStream = stream;
+                    video.srcObject = stream;
+                    
+                    // Set up media recorder for video
+                    try {
+                        if (MediaRecorder.isTypeSupported('video/webm; codecs=vp9')) {
+                            mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm; codecs=vp9' });
+                        } else if (MediaRecorder.isTypeSupported('video/webm')) {
+                            mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm' });
+                        } else if (MediaRecorder.isTypeSupported('video/mp4')) {
+                            mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/mp4' });
+                        } else {
+                            mediaRecorder = new MediaRecorder(stream);
+                        }
+                        
+                        mediaRecorder.ondataavailable = (event) => {
+                            if (event.data.size > 0) {
+                                recordedChunks.push(event.data);
+                            }
+                        };
+                        
+                        mediaRecorder.onstop = () => {
+                            saveRecordedVideo();
+                        };
+                    } catch (e) {
+                        console.warn('MediaRecorder setup failed:', e);
+                    }
+                })
+                .catch(err => {
+                    console.error('Camera access error:', err);
+                    modal.style.display = 'none';
+                    showCameraFallback(challengeIndex);
+                });
+        }
+
+        function showCameraFallback(challengeIndex) {
+            const challengeTitle = currentChallenges[challengeIndex].title;
+            const cameraModal = document.createElement('div');
+            cameraModal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.8);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 2000;
+                padding: 20px;
+            `;
+            
+            cameraModal.innerHTML = `
+                <div style="background: var(--card-bg); padding: 30px; border-radius: 20px; text-align: center; max-width: 350px; width: 100%; color: var(--text-primary);">
+                    <h3 style="margin-bottom: 15px;">📱 Take Photo/Video</h3>
+                    <div style="margin-bottom: 20px;">
+                        <strong style="color: var(--secondary-color);">${challengeTitle}</strong>
+                    </div>
+                    
+                    <div style="background: var(--border); padding: 15px; border-radius: 10px; margin-bottom: 20px; text-align: left; font-size: 12px; color: var(--text-secondary);">
+                        <strong>📱 Instructions:</strong><br>
+                        • "Take Photo" opens camera for new photos<br>
+                        • "Record Video" opens camera for new videos<br>
+                        • "Choose from Gallery" selects existing media
+                    </div>
+                    
+                    <!-- Hidden file inputs -->
+                    <input type="file" accept="image/*" capture="camera" id="photoInput_${challengeIndex}" style="display: none;">
+                    <input type="file" accept="video/*" capture="camcorder" id="videoInput_${challengeIndex}" style="display: none;">
+                    <input type="file" accept="image/*,video/*" id="galleryInput_${challengeIndex}" style="display: none;">
+                    
+                    <div style="display: flex; gap: 8px; margin-bottom: 15px;">
+                        <button onclick="document.getElementById('photoInput_${challengeIndex}').click()" class="btn btn-primary" style="flex: 1; padding: 12px; font-size: 13px;">
+                            📸 Take Photo
+                        </button>
+                        <button onclick="document.getElementById('videoInput_${challengeIndex}').click()" class="btn" style="flex: 1; padding: 12px; font-size: 13px; background: #e74c3c; color: white;">
+                            🎥 Record Video
+                        </button>
+                    </div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <button onclick="document.getElementById('galleryInput_${challengeIndex}').click()" class="btn btn-secondary" style="width: 100%; margin-bottom: 10px;">
+                            📁 Choose from Gallery
+                        </button>
+                    </div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <button onclick="completeWithoutMedia(${challengeIndex})" class="btn" style="width: 100%; background: var(--success-color); color: white; margin-bottom: 10px;">
+                            ✅ Complete Without Photo
+                        </button>
+                    </div>
+                    
+                    <button onclick="closeCameraModal()" class="btn" style="width: 100%; background: var(--border); color: var(--text-secondary);">
+                        Cancel
+                    </button>
+                </div>
+            `;
+            
+            document.body.appendChild(cameraModal);
+            
+            // Setup file input listeners
+            setupFileInputListeners(challengeIndex);
+        }
+
+        function setupFileInputListeners(challengeIndex) {
+            // Photo input
+            const photoInput = document.getElementById(`photoInput_${challengeIndex}`);
+            if (photoInput) {
+                photoInput.onchange = function(e) {
+                    if (e.target.files && e.target.files[0]) {
+                        handleFileSelection(e, challengeIndex, 'photo');
+                        closeCameraModal();
+                    }
+                };
+            }
+            
+            // Video input
+            const videoInput = document.getElementById(`videoInput_${challengeIndex}`);
+            if (videoInput) {
+                videoInput.onchange = function(e) {
+                    if (e.target.files && e.target.files[0]) {
+                        handleFileSelection(e, challengeIndex, 'video');
+                        closeCameraModal();
+                    }
+                };
+            }
+            
+            // Gallery input
+            const galleryInput = document.getElementById(`galleryInput_${challengeIndex}`);
+            if (galleryInput) {
+                galleryInput.onchange = function(e) {
+                    if (e.target.files && e.target.files[0]) {
+                        handleFileSelection(e, challengeIndex, 'gallery');
+                        closeCameraModal();
+                    }
+                };
+            }
+        }
+
+        function closeCameraModal() {
+            // Remove camera modal
+            const modals = document.querySelectorAll('[style*="position: fixed"]');
+            modals.forEach(modal => {
+                if (modal.style.zIndex === '2000') {
+                    modal.remove();
+                }
+            });
+        }
+
+        function completeWithoutMedia(challengeIndex) {
+            toggleChallenge(challengeIndex);
+            closeCameraModal();
+            showMiniCelebration('✅ Challenge completed!');
+        }
+
+        function handleFileSelection(event, challengeIndex, source) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const isVideo = file.type.startsWith('video/');
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                photos.push({
+                    challengeIndex: challengeIndex,
+                    challengeTitle: currentChallenges[challengeIndex].title,
+                    data: e.target.result,
+                    timestamp: new Date(),
+                    type: isVideo ? 'video' : 'photo',
+                    filter: 'none'
+                });
+                
+                toggleChallenge(challengeIndex);
+                playCompletionSound();
+                
+                const sourceText = source === 'gallery' ? 'selected' : (isVideo ? 'recorded' : 'captured');
+                showMiniCelebration(`${isVideo ? '🎥 Video' : '📸 Photo'} ${sourceText}!`);
+                
+                saveGameData();
+            };
+            
+            reader.readAsDataURL(file);
+        }
+
+        function switchToPhotoMode() {
+            currentMode = 'photo';
+            document.getElementById('photoModeBtn').classList.add('active');
+            document.getElementById('videoModeBtn').classList.remove('active');
+            
+            document.getElementById('photoControls').style.display = 'flex';
+            document.getElementById('videoControls').style.display = 'none';
+            
+            // Stop any ongoing recording
+            if (isRecording) {
+                stopRecording();
+            }
+        }
+
+        function switchToVideoMode() {
+            currentMode = 'video';
+            document.getElementById('videoModeBtn').classList.add('active');
+            document.getElementById('photoModeBtn').classList.remove('active');
+            
+            document.getElementById('photoControls').style.display = 'none';
+            document.getElementById('videoControls').style.display = 'flex';
+        }
+
+        function toggleRecording() {
+            if (isRecording) {
+                stopRecording();
+            } else {
+                startRecording();
+            }
+        }
+
+        function startRecording() {
+            if (!mediaRecorder || mediaRecorder.state === 'recording') return;
+            
+            recordedChunks = [];
+            mediaRecorder.start();
+            isRecording = true;
+            recordingStartTime = Date.now();
+            
+            // Update UI
+            document.getElementById('recordingIndicator').style.display = 'block';
+            document.getElementById('recordBtn').textContent = '⏹️ Stop';
+            document.getElementById('recordBtn').style.background = '#27ae60';
+            
+            // Start timer
+            recordingTimer = setInterval(updateRecordingTime, 1000);
+            
+            playSound(440, 0.1); // Start recording sound
+        }
+
+        function stopRecording() {
+            if (!mediaRecorder || mediaRecorder.state !== 'recording') return;
+            
+            mediaRecorder.stop();
+            isRecording = false;
+            
+            // Update UI
+            document.getElementById('recordingIndicator').style.display = 'none';
+            document.getElementById('recordBtn').textContent = '🎥 Record';
+            document.getElementById('recordBtn').style.background = '#e74c3c';
+            
+            // Stop timer
+            if (recordingTimer) {
+                clearInterval(recordingTimer);
+                recordingTimer = null;
+            }
+            
+            playSound(330, 0.1); // Stop recording sound
+        }
+
+        function updateRecordingTime() {
+            if (!recordingStartTime) return;
+            
+            const elapsed = Math.floor((Date.now() - recordingStartTime) / 1000);
+            const minutes = Math.floor(elapsed / 60);
+            const seconds = elapsed % 60;
+            document.getElementById('recordingTime').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function saveRecordedVideo() {
+            const blob = new Blob(recordedChunks, { type: 'video/webm' });
+            const videoUrl = URL.createObjectURL(blob);
+            
+            // Store video
+            photos.push({
+                challengeIndex: currentChallengeIndex,
+                challengeTitle: currentChallenges[currentChallengeIndex].title,
+                data: videoUrl,
+                timestamp: new Date(),
+                type: 'video',
+                blob: blob,
+                filter: 'none'
+            });
+            
+            // Complete the challenge
+            toggleChallenge(currentChallengeIndex);
+            
+            // Close camera
+            closeCamera();
+            
+            // Show success message
+            playCompletionSound();
+            showMiniCelebration('🎥 Video recorded!');
+            
+            saveGameData();
+        }
+
+        function closeCamera() {
+            const modal = document.getElementById('cameraModal');
+            const video = document.getElementById('cameraVideo');
+            
+            // Stop recording if active
+            if (isRecording) {
+                stopRecording();
+            }
+            
+            // Clean up media recorder
+            if (mediaRecorder) {
+                mediaRecorder = null;
+            }
+            
+            // Stop camera stream
+            if (currentStream) {
+                currentStream.getTracks().forEach(track => track.stop());
+                currentStream = null;
+            }
+            
+            // Reset UI
+            video.srcObject = null;
+            modal.style.display = 'none';
+            currentChallengeIndex = null;
+            recordedChunks = [];
+            
+            // Reset to photo mode
+            switchToPhotoMode();
+        }
+
+        function capturePhoto() {
+            if (currentMode === 'video') {
+                showMiniCelebration('Switch to Photo mode to take pictures! 📸');
+                return;
+            }
+            
+            const video = document.getElementById('cameraVideo');
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            context.drawImage(video, 0, 0);
+            
+            const photoData = canvas.toDataURL('image/jpeg', 0.8);
+            
+            // Store photo
+            photos.push({
+                challengeIndex: currentChallengeIndex,
+                challengeTitle: currentChallenges[currentChallengeIndex].title,
+                data: photoData,
+                timestamp: new Date(),
+                type: 'photo',
+                filter: 'none'
+            });
+            
+            // Complete the challenge
+            toggleChallenge(currentChallengeIndex);
+            
+            // Close camera
+            closeCamera();
+            
+            // Show success message
+            playCompletionSound();
+            showMiniCelebration('📸 Photo captured!');
+            
+            saveGameData();
+        }
+
+        function getFilterCSS(filter) {
+            const filters = {
+                'none': '',
+                'sepia': 'filter: sepia(100%);',
+                'grayscale': 'filter: grayscale(100%);',
+                'vintage': 'filter: sepia(50%) contrast(120%) brightness(110%);',
+                'bright': 'filter: brightness(130%) contrast(110%);',
+                'contrast': 'filter: contrast(150%) brightness(110%);'
+            };
+            return filters[filter] || '';
+        }
+
+        function editPhoto(photoIndex) {
+            if (photos[photoIndex].type === 'video') {
+                showMiniCelebration('📹 Video editing not supported yet!');
+                return;
+            }
+            
+            editingPhotoIndex = photoIndex;
+            const modal = document.getElementById('photoEditorModal');
+            const img = document.getElementById('editingPhoto');
+            
+            img.src = photos[photoIndex].data;
+            modal.style.display = 'flex';
+            
+            // Reset filter buttons
+            document.querySelectorAll('.filter-btn-editor').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.getAttribute('data-filter') === (photos[photoIndex].filter || 'none')) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+
+        function applyFilter(filterName) {
+            const img = document.getElementById('editingPhoto');
+            const filterCSS = getFilterCSS(filterName);
+            
+            img.style.cssText = `max-width: 100%; max-height: 300px; border-radius: 12px; ${filterCSS}`;
+            
+            // Update active filter button
+            document.querySelectorAll('.filter-btn-editor').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.getAttribute('data-filter') === filterName) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            playSound(300, 0.1);
+        }
+
+        function saveEditedPhoto() {
+            if (editingPhotoIndex === null) return;
+            
+            const activeFilter = document.querySelector('.filter-btn-editor.active');
+            const filterName = activeFilter ? activeFilter.getAttribute('data-filter') : 'none';
+            
+            // Update the photo's filter
+            photos[editingPhotoIndex].filter = filterName;
+            
+            closePhotoEditor();
+            renderPhotoGallery();
+            showMiniCelebration(`✨ Photo filter applied: ${filterName}!`);
+            saveGameData();
+        }
+
+        function closePhotoEditor() {
+            document.getElementById('photoEditorModal').style.display = 'none';
+            editingPhotoIndex = null;
+        }
+
+        function showMiniCelebration(message) {
+            const celebration = document.createElement('div');
+            celebration.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: linear-gradient(45deg, var(--primary-color), #44a08d);
+                color: white;
+                padding: 20px;
+                border-radius: 15px;
+                font-weight: bold;
+                z-index: 2000;
+                animation: fadeInOut 2s ease-in-out forwards;
+                box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+                max-width: 90%;
+                text-align: center;
+                font-size: 14px;
+            `;
+            celebration.textContent = message;
+            
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes fadeInOut {
+                    0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+                    20% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+                    80% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+                    100% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+                }
+            `;
+            document.head.appendChild(style);
+            document.body.appendChild(celebration);
+            
+            setTimeout(() => {
+                celebration.remove();
+                style.remove();
+            }, 2000);
+        }
+
+        function toggleChallenge(index) {
+            if (completedChallenges.has(index)) {
+                completedChallenges.delete(index);
+                totalPoints -= getChallengeTotalPoints(index);
+                streak = Math.max(0, streak - 1);
+            } else {
+                completedChallenges.add(index);
+                const points = getChallengeTotalPoints(index);
+                totalPoints += points;
+                streak++;
+                
+                playCompletionSound();
+                
+                if (streak >= 3 && streak % 3 === 0) {
+                    const bonus = Math.floor(streak / 3) * 5;
+                    totalPoints += bonus;
+                    showMiniCelebration(`🔥 ${streak} streak bonus! +${bonus} points`);
+                }
+            }
+
+            updateStats();
+            checkLevelUp();
+            checkAchievements();
+            renderChallenges();
+            saveGameData();
+        }
+
+        function getChallengeTotalPoints(index) {
+            let points = currentChallenges[index].points;
+            if (dailyBonusChallenges.has(index)) {
+                points *= 2;
+            }
+            return points;
+        }
+
+        function updateStats() {
+            document.getElementById('score').textContent = completedChallenges.size;
+            document.getElementById('points').textContent = totalPoints;
+            document.getElementById('level').textContent = currentLevel;
+            document.getElementById('photoCount').textContent = photos.length;
+            document.getElementById('streakCounter').textContent = `🔥 ${streak} Streak`;
+            updateLevelProgress();
+        }
+
+        function updateLevelProgress() {
+            const challengesInLevel = completedChallenges.size % 5;
+            const progress = (challengesInLevel / 5) * 100;
+            
+            document.getElementById('levelFill').style.width = `${progress}%`;
+            
+            const challengesNeeded = 5 - challengesInLevel;
+            if (challengesNeeded === 5) {
+                document.getElementById('levelText').textContent = `Complete 5 challenges to reach Level ${currentLevel + 1}!`;
+            } else {
+                document.getElementById('levelText').textContent = `${challengesNeeded} more challenges to Level ${currentLevel + 1}!`;
+            }
+        }
+
+        function checkLevelUp() {
+            const newLevel = Math.floor(completedChallenges.size / 5) + 1;
+            if (newLevel > currentLevel) {
+                currentLevel = newLevel;
+                playLevelUpSound();
+                showCelebration('Level Up!', `You've reached Level ${currentLevel}! Keep hunting! 🎯`);
+            }
+        }
+
+        function checkAchievements() {
+            if (completedChallenges.size >= 1 && !achievements.has('first')) {
+                achievements.add('first');
+                unlockAchievement('first', 'First Shot Unlocked! 🎯');
+            }
+            
+            if (streak >= 5 && !achievements.has('streak')) {
+                achievements.add('streak');
+                unlockAchievement('streak', 'Hot Streak Achieved! 🔥');
+            }
+            
+            const socialCompleted = Array.from(completedChallenges)
+                .filter(i => currentChallenges[i].category === 'social').length;
+            if (socialCompleted >= 8 && !achievements.has('social')) {
+                achievements.add('social');
+                unlockAchievement('social', 'Social Star! 👥');
+            }
+            
+            const familyCompleted = Array.from(completedChallenges)
+                .filter(i => currentChallenges[i].category === 'family').length;
+            if (familyCompleted >= 10 && !achievements.has('family')) {
+                achievements.add('family');
+                unlockAchievement('family', 'Family Photography Pro! 👨‍👩‍👧‍👦');
+            }
+            
+            const creativeCompleted = Array.from(completedChallenges)
+                .filter(i => currentChallenges[i].category === 'creative').length;
+            if (creativeCompleted >= 10 && !achievements.has('creative')) {
+                achievements.add('creative');
+                unlockAchievement('creative', 'Creative Master! 🎨');
+            }
+            
+            if (photos.length >= 25 && !achievements.has('photographer')) {
+                achievements.add('photographer');
+                unlockAchievement('photographer', 'Photo Master! 📸');
+            }
+            
+            if (completedChallenges.size >= 40 && !achievements.has('master')) {
+                achievements.add('master');
+                unlockAchievement('master', 'Hunt Master Achieved! 🏆');
+            }
+        }
+
+        function unlockAchievement(achievement, message) {
+            const badge = document.querySelector(`[data-achievement="${achievement}"]`);
+            badge.classList.add('earned');
+            
+            playLevelUpSound();
+            showMiniCelebration(message);
+            saveGameData();
+        }
+
+        function showCelebration(title = 'Level Up!', text = 'Amazing work, photographer!') {
+            const popup = document.getElementById('celebrationPopup');
+            document.getElementById('celebrationTitle').textContent = title;
+            document.getElementById('celebrationText').textContent = text;
+            popup.style.display = 'flex';
+        }
+
+        function closeCelebration() {
+            document.getElementById('celebrationPopup').style.display = 'none';
+        }
+
+        function showTab(tabName) {
+            const challengesContainer = document.getElementById('challengesContainer');
+            const photoGallery = document.getElementById('photoGallery');
+            const challengesTab = document.getElementById('challengesTab');
+            const galleryTab = document.getElementById('galleryTab');
+            
+            challengesTab.classList.remove('active');
+            galleryTab.classList.remove('active');
+            
+            if (tabName === 'challenges') {
+                challengesTab.classList.add('active');
+                challengesContainer.style.display = 'block';
+                photoGallery.style.display = 'none';
+            } else {
+                galleryTab.classList.add('active');
+                challengesContainer.style.display = 'none';
+                photoGallery.style.display = 'block';
+                renderPhotoGallery();
+            }
+            
+            playSound(300, 0.1);
+        }
+
+        function renderPhotoGallery() {
+            const grid = document.getElementById('photoGrid');
+            const clearAllBtn = document.getElementById('clearAllBtn');
+            grid.innerHTML = '';
+            
+            if (photos.length === 0) {
+                grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: var(--text-secondary); padding: 40px;">📸 No media yet! Start capturing from 47+ amazing challenges!<br><br>📱 Tip: Click any camera button to take photos with your device camera!</div>';
+                if (clearAllBtn) clearAllBtn.style.display = 'none';
+                return;
+            }
+            
+            if (clearAllBtn) clearAllBtn.style.display = 'block';
+            
+            photos.forEach((media, index) => {
+                const item = document.createElement('div');
+                item.className = 'photo-item';
+                item.style.position = 'relative';
+                
+                const isVideo = media.type === 'video';
+                const filterCSS = getFilterCSS(media.filter || 'none');
+                
+                const mediaElement = isVideo 
+                    ? `<video src="${media.data}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px; ${filterCSS}" muted></video>`
+                    : `<img src="${media.data}" alt="${media.challengeTitle}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px; ${filterCSS}">`;
+                
+                item.innerHTML = `
+                    ${mediaElement}
+                    <div style="position: absolute; bottom: 5px; left: 5px; right: 5px; background: rgba(0,0,0,0.7); color: white; padding: 4px; border-radius: 6px; font-size: 10px; text-align: center;">
+                        ${isVideo ? '🎥' : '📸'} ${media.challengeTitle}${media.filter && media.filter !== 'none' ? ` (${media.filter})` : ''}
+                    </div>
+                    ${isVideo ? '<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.7); color: white; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; font-size: 14px; pointer-events: none;">▶️</div>' : ''}
+                    ${!isVideo ? `<button onclick="editPhoto(${index}); event.stopPropagation();" style="position: absolute; top: 5px; left: 5px; background: rgba(78, 205, 196, 0.8); color: white; border: none; border-radius: 50%; width: 24px; height: 24px; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease;">✨</button>` : ''}
+                    <button onclick="deletePhoto(${index}); event.stopPropagation();" style="position: absolute; top: 5px; right: 5px; background: rgba(255,0,0,0.8); color: white; border: none; border-radius: 50%; width: 24px; height: 24px; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease;">
+                        ×
+                    </button>
+                `;
+                item.onclick = () => viewPhoto(media, index);
+                grid.appendChild(item);
+            });
+        }
+
+        function deletePhoto(mediaIndex) {
+            const media = photos[mediaIndex];
+            const isVideo = media.type === 'video';
+            
+            // Show confirmation dialog
+            const confirmModal = document.createElement('div');
+            confirmModal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.8);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 3000;
+                padding: 20px;
+            `;
+            
+            const filterCSS = getFilterCSS(media.filter || 'none');
+            const previewElement = isVideo 
+                ? `<video src="${media.data}" style="width: 100px; height: 100px; object-fit: cover; border-radius: 10px; margin-bottom: 10px; ${filterCSS}" muted></video>`
+                : `<img src="${media.data}" style="width: 100px; height: 100px; object-fit: cover; border-radius: 10px; margin-bottom: 10px; ${filterCSS}" alt="Preview">`;
+            
+            confirmModal.innerHTML = `
+                <div style="background: var(--card-bg); padding: 25px; border-radius: 20px; text-align: center; max-width: 300px; width: 100%; color: var(--text-primary);">
+                    <h3 style="margin-bottom: 15px;">🗑️ Delete ${isVideo ? 'Video' : 'Photo'}?</h3>
+                    <div style="margin-bottom: 20px;">
+                        ${previewElement}
+                        <div style="color: var(--text-secondary); font-size: 14px;">"${media.challengeTitle}"</div>
+                    </div>
+                    <p style="color: var(--text-secondary); margin-bottom: 20px; line-height: 1.4;">
+                        Are you sure you want to delete this ${isVideo ? 'video' : 'photo'}? This action cannot be undone.
+                    </p>
+                    <div style="display: flex; gap: 10px;">
+                        <button onclick="this.parentElement.parentElement.parentElement.remove()" class="btn" style="flex: 1; background: var(--border); color: var(--text-secondary);">
+                            Cancel
+                        </button>
+                        <button onclick="confirmDeletePhoto(${mediaIndex}); this.parentElement.parentElement.parentElement.remove();" class="btn" style="flex: 1; background: #e74c3c; color: white;">
+                            🗑️ Delete
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(confirmModal);
+        }
+
+        function confirmDeletePhoto(mediaIndex) {
+            const media = photos[mediaIndex];
+            const isVideo = media.type === 'video';
+            
+            // Clean up video URL if it's a video
+            if (isVideo && media.data.startsWith('blob:')) {
+                URL.revokeObjectURL(media.data);
+            }
+            
+            // Remove from array
+            photos.splice(mediaIndex, 1);
+            
+            // Update gallery display
+            renderPhotoGallery();
+            updateStats();
+            
+            // Show confirmation
+            showMiniCelebration(`🗑️ ${isVideo ? 'Video' : 'Photo'} deleted!`);
+            
+            // Play sound
+            playSound(200, 0.2);
+            saveGameData();
+        }
+
+        function clearAllPhotos() {
+            if (photos.length === 0) return;
+            
+            const confirmModal = document.createElement('div');
+            confirmModal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.8);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 3000;
+                padding: 20px;
+            `;
+            
+            const videoCount = photos.filter(m => m.type === 'video').length;
+            const photoCount = photos.filter(m => m.type === 'photo').length;
+            
+            confirmModal.innerHTML = `
+                <div style="background: var(--card-bg); padding: 25px; border-radius: 20px; text-align: center; max-width: 300px; width: 100%; color: var(--text-primary);">
+                    <h3 style="margin-bottom: 15px;">🗑️ Clear All Media?</h3>
+                    <div style="color: var(--text-secondary); margin-bottom: 20px;">
+                        <strong>${photos.length} items</strong> will be permanently deleted<br>
+                        <small>(${photoCount} photos, ${videoCount} videos)</small>
+                    </div>
+                    <p style="color: var(--text-secondary); margin-bottom: 20px; line-height: 1.4;">
+                        This action cannot be undone. Are you sure you want to delete all media?
+                    </p>
+                    <div style="display: flex; gap: 10px;">
+                        <button onclick="this.parentElement.parentElement.parentElement.remove()" class="btn" style="flex: 1; background: var(--border); color: var(--text-secondary);">
+                            Cancel
+                        </button>
+                        <button onclick="confirmClearAllPhotos(); this.parentElement.parentElement.parentElement.remove();" class="btn" style="flex: 1; background: #e74c3c; color: white;">
+                            🗑️ Delete All
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(confirmModal);
+        }
+
+        function confirmClearAllPhotos() {
+            // Clean up video URLs
+            photos.forEach(media => {
+                if (media.type === 'video' && media.data.startsWith('blob:')) {
+                    URL.revokeObjectURL(media.data);
+                }
+            });
+            
+            const mediaCount = photos.length;
+            photos.length = 0; // Clear the array
+            
+            renderPhotoGallery();
+            updateStats();
+            showMiniCelebration(`🗑️ ${mediaCount} items deleted!`);
+            playSound(200, 0.3);
+            saveGameData();
+        }
+
+        function viewPhoto(media, mediaIndex) {
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.9);
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                z-index: 2000;
+                padding: 20px;
+            `;
+            
+            const isVideo = media.type === 'video';
+            const filterCSS = getFilterCSS(media.filter || 'none');
+            const mediaElement = isVideo 
+                ? `<video src="${media.data}" controls style="max-width: 90%; max-height: 70%; border-radius: 12px; ${filterCSS}" autoplay>`
+                : `<img src="${media.data}" style="max-width: 90%; max-height: 70%; border-radius: 12px; ${filterCSS}" alt="${media.challengeTitle}">`;
+            
+            modal.innerHTML = `
+                <div style="position: relative; max-width: 90%; max-height: 80%;">
+                    ${mediaElement}
+                    <button onclick="deletePhotoFromView(${mediaIndex}); this.parentElement.parentElement.remove();" style="position: absolute; top: 10px; right: 10px; background: rgba(255,0,0,0.8); color: white; border: none; border-radius: 50%; width: 35px; height: 35px; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease;">
+                        🗑️
+                    </button>
+                    ${!isVideo ? `<button onclick="editPhotoFromView(${mediaIndex}); this.parentElement.parentElement.remove();" style="position: absolute; top: 10px; left: 10px; background: rgba(78, 205, 196, 0.8); color: white; border: none; border-radius: 50%; width: 35px; height: 35px; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease;">✨</button>` : ''}
+                </div>
+                <h3 style="color: white; margin-top: 20px; text-align: center;">${isVideo ? '🎥' : '📸'} ${media.challengeTitle}</h3>
+                <p style="color: #ccc; margin-top: 10px; text-align: center;">${media.timestamp.toLocaleDateString()} ${media.filter && media.filter !== 'none' ? `• ${media.filter} filter` : ''}</p>
+                <div style="display: flex; gap: 15px; margin-top: 20px; flex-wrap: wrap; justify-content: center;">
+                    <button onclick="shareMediaToInstagram(${mediaIndex})" style="padding: 10px 20px; background: #405de6; color: white; border: none; border-radius: 20px; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                        📱 Share to Instagram
+                    </button>
+                    ${isVideo ? `<button onclick="downloadVideo(${mediaIndex})" style="padding: 10px 20px; background: #27ae60; color: white; border: none; border-radius: 20px; cursor: pointer; display: flex; align-items: center; gap: 8px;">💾 Download</button>` : ''}
+                    <button onclick="this.parentElement.parentElement.remove()" style="padding: 10px 20px; background: var(--primary-color); color: white; border: none; border-radius: 20px; cursor: pointer;">
+                        Close
+                    </button>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Close modal on escape key
+            modal.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    modal.remove();
+                }
+            });
+            
+            // Focus the modal for keyboard navigation
+            modal.setAttribute('tabindex', '-1');
+            modal.focus();
+        }
+
+        function deletePhotoFromView(mediaIndex) {
+            deletePhoto(mediaIndex);
+        }
+
+        function editPhotoFromView(mediaIndex) {
+            editPhoto(mediaIndex);
+        }
+
+        function downloadVideo(mediaIndex) {
+            const media = photos[mediaIndex];
+            if (media.type !== 'video') return;
+            
+            const link = document.createElement('a');
+            link.href = media.data;
+            link.download = `${media.challengeTitle.replace(/[^a-z0-9]/gi, '_')}_${Date.now()}.webm`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            showMiniCelebration('💾 Video downloading!');
+        }
+
+        function shareMediaToInstagram(mediaIndex) {
+            const media = photos[mediaIndex];
+            const isVideo = media.type === 'video';
+            
+            const message = `✅ Challenge Complete! ${isVideo ? '🎥' : '📸'}\n\n"${media.challengeTitle}"\n\nCaptured at Happybend Homecoming 2025! 🎉\n\n#HappybendHomecoming2025 #FamilyReunion #PhotoHunt #FamilyMemories`;
+            
+            // Try to copy to clipboard
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(message).then(() => {
+                    // Try to open Instagram
+                    if (navigator.userAgent.match(/iPhone|iPad|iPod|Android/i)) {
+                        try {
+                            window.location.href = 'instagram://camera';
+                        } catch (e) {
+                            window.open('https://www.instagram.com/', '_blank');
+                        }
+                    } else {
+                        window.open('https://www.instagram.com/', '_blank');
+                    }
+                    showMiniCelebration(`📋 Caption copied! Add this ${isVideo ? 'video' : 'photo'} in Instagram! 📸`);
+                }).catch(() => {
+                    showMiniCelebration(`📱 Open Instagram and share your ${isVideo ? 'video' : 'photo'}! Use #HappybendHomecoming2025 📸`);
+                });
+            } else {
+                showMiniCelebration(`📱 Open Instagram and share your ${isVideo ? 'video' : 'photo'}! Use #HappybendHomecoming2025 📸`);
+            }
+        }
+
+        function shareChallenge(challengeIndex) {
+            const challenge = currentChallenges[challengeIndex];
+            const points = getChallengeTotalPoints(challengeIndex);
+            const challengeMessage = `✅ Challenge Complete! ${challenge.emoji}\n\n"${challenge.title}"\n${challenge.description}\n\n+${points} points earned! 🎯\n\n#HappybendHomecoming2025 #FamilyReunion #PhotoHunt #FamilyMemories`;
+            
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(challengeMessage).then(() => {
+                    if (navigator.userAgent.match(/iPhone|iPad|iPod|Android/i)) {
+                        try {
+                            window.location.href = 'instagram://camera';
+                        } catch (e) {
+                            window.open('https://www.instagram.com/', '_blank');
+                        }
+                    } else {
+                        window.open('https://www.instagram.com/', '_blank');
+                    }
+                    showMiniCelebration('📋 Challenge caption copied! Add your photo in Instagram! 📸');
+                }).catch(() => {
+                    showMiniCelebration('📱 Open Instagram and share your challenge! Use #HappybendHomecoming2025 📸');
+                });
+            } else {
+                showMiniCelebration('📱 Open Instagram and share your challenge! Use #HappybendHomecoming2025 📸');
+            }
+        }
+
+        function showStats() {
+            const completedByCategory = {
+                family: Array.from(completedChallenges).filter(i => currentChallenges[i].category === 'family').length,
+                social: Array.from(completedChallenges).filter(i => currentChallenges[i].category === 'social').length,
+                creative: Array.from(completedChallenges).filter(i => currentChallenges[i].category === 'creative').length,
+                candid: Array.from(completedChallenges).filter(i => currentChallenges[i].category === 'candid').length,
+                bonus: Array.from(completedChallenges).filter(i => currentChallenges[i].category === 'bonus').length
+            };
+            
+            const statsMessage = `📊 Your Hunt Statistics:\n\n🎯 Challenges: ${completedChallenges.size}/${challenges.length}\n🏆 Level: ${currentLevel}\n⭐ Points: ${totalPoints}\n🔥 Streak: ${streak}\n🏅 Achievements: ${achievements.size}/7\n📸 Photos: ${photos.length}\n\n📋 By Category:\n👨‍👩‍👧‍👦 Family: ${completedByCategory.family}\n👥 Social: ${completedByCategory.social}\n🎨 Creative: ${completedByCategory.creative}\n📷 Candid: ${completedByCategory.candid}\n🌟 Bonus: ${completedByCategory.bonus}`;
+            
+            showMiniCelebration(statsMessage);
+        }
+
+        function shareScore() {
+            const achievementText = achievements.size > 0 ? `\n🏅 ${achievements.size}/7 achievements unlocked` : '';
+            const levelProgress = completedChallenges.size % 5;
+            const progressText = levelProgress > 0 ? `\n📈 ${levelProgress}/5 progress to Level ${currentLevel + 1}` : '';
+            
+            const message = `🏆 Level ${currentLevel} Happybend Homecoming Photographer! 📸\n\n✨ ${completedChallenges.size}/${challenges.length} challenges completed\n🎯 ${totalPoints} points earned\n🔥 ${streak} challenge streak${achievementText}${progressText}\n\nJoin the #HappybendHomecoming2025 scavenger hunt! 👨‍👩‍👧‍👦`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Happybend Homecoming 2025 Hunt Progress',
+                    text: message
+                }).catch(() => {
+                    // Fallback to clipboard
+                    if (navigator.clipboard) {
+                        navigator.clipboard.writeText(message).then(() => {
+                            showMiniCelebration('📋 Progress copied! Share it on Instagram with #HappybendHomecoming2025! 📱');
+                        });
+                    }
+                });
+            } else if (navigator.clipboard) {
+                navigator.clipboard.writeText(message).then(() => {
+                    showMiniCelebration('📋 Progress copied! Share it on Instagram with #HappybendHomecoming2025! 📱');
+                }).catch(() => {
+                    alert(message);
+                });
+            } else {
+                alert(message);
+            }
+        }
+
+        function showLeaderboard() {
+            const modal = document.getElementById('leaderboardModal');
+            const list = document.getElementById('leaderboardList');
+            
+            // Load family leaderboard
+            familyLeaderboard = JSON.parse(localStorage.getItem('familyLeaderboard') || '[]');
+            
+            if (familyLeaderboard.length > 0) {
+                // Show real family leaderboard
+                const sortedFamily = [...familyLeaderboard].sort((a, b) => b.points - a.points);
+                
+                list.innerHTML = sortedFamily.map((entry, index) => `
+                    <div class="leaderboard-entry ${entry.name === userName ? 'current-user' : ''}">
+                        <div style="font-size: 20px; font-weight: bold; min-width: 35px;">
+                            ${index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `#${index + 1}`}
+                        </div>
+                        <div style="flex: 1;">
+                            <div style="font-weight: bold; font-size: 14px;">${entry.name}</div>
+                            <div style="font-size: 11px; opacity: 0.8;">
+                                Level ${entry.level} • ${entry.score} challenges • ${entry.points} points
+                            </div>
+                        </div>
+                        ${entry.name === userName ? '<div style="font-size: 18px;">👑</div>' : ''}
+                    </div>
+                `).join('');
+                
+                // Add instruction for non-checked-in users
+                if (!familyLeaderboard.some(p => p.name === userName)) {
+                    list.innerHTML += `
+                        <div style="background: var(--border); padding: 15px; border-radius: 10px; margin-top: 15px; text-align: center;">
+                            <div style="color: var(--text-secondary); font-size: 12px; margin-bottom: 10px;">
+                                <strong>🎯 Want to join the family leaderboard?</strong><br>
+                                Complete challenges, then scan QR codes posted around the reunion!
+                            </div>
+                            <div style="color: var(--text-primary); font-weight: bold;">
+                                Your Progress: ${completedChallenges.size} challenges • ${totalPoints} points
+                            </div>
+                        </div>
+                    `;
+                }
+            } else {
+                // Show demo leaderboard with instruction
+                const leaderboardData = [
+                    { name: userName, score: completedChallenges.size, points: totalPoints, level: currentLevel, isCurrentUser: true },
+                    { name: 'Aunt Sarah', score: Math.max(0, completedChallenges.size - Math.floor(Math.random() * 10) - 2), points: Math.max(0, totalPoints - Math.floor(Math.random() * 100) - 20), level: Math.max(1, currentLevel - Math.floor(Math.random() * 2)) },
+                    { name: 'Cousin Mike', score: Math.max(0, completedChallenges.size - Math.floor(Math.random() * 8) - 1), points: Math.max(0, totalPoints - Math.floor(Math.random() * 80) - 10), level: currentLevel },
+                    { name: 'Grandma Betty', score: Math.max(0, completedChallenges.size - Math.floor(Math.random() * 15) - 5), points: Math.max(0, totalPoints - Math.floor(Math.random() * 120) - 40), level: Math.max(1, currentLevel - Math.floor(Math.random() * 3)) }
+                ].sort((a, b) => b.points - a.points);
+                
+                list.innerHTML = `
+                    <div style="background: linear-gradient(45deg, #3498db, #2980b9); color: white; padding: 15px; border-radius: 10px; margin-bottom: 15px; text-align: center;">
+                        <div style="font-weight: bold; margin-bottom: 5px;">🎮 Demo Mode</div>
+                        <div style="font-size: 12px; opacity: 0.9;">Ask organizer for QR codes to join real family leaderboard!</div>
+                    </div>
+                ` + leaderboardData.map((entry, index) => `
+                    <div class="leaderboard-entry ${entry.isCurrentUser ? 'current-user' : ''}" style="${!entry.isCurrentUser ? 'opacity: 0.6;' : ''}">
+                        <div style="font-size: 20px; font-weight: bold; min-width: 35px;">
+                            ${index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `#${index + 1}`}
+                        </div>
+                        <div style="flex: 1;">
+                            <div style="font-weight: bold; font-size: 14px;">${entry.name}</div>
+                            <div style="font-size: 11px; opacity: 0.8;">
+                                Level ${entry.level} • ${entry.score} challenges • ${entry.points} points
+                            </div>
+                        </div>
+                        ${entry.isCurrentUser ? '<div style="font-size: 18px;">👑</div>' : ''}
+                    </div>
+                `).join('');
+            }
+            
+            modal.style.display = 'flex';
+        }
+
+        function closeLeaderboard() {
+            document.getElementById('leaderboardModal').style.display = 'none';
+        }
+
+        // Initialize game when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeGame();
+            
+            // Setup keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    // Close any open modals
+                    document.querySelectorAll('[style*="position: fixed"]').forEach(modal => {
+                        if (modal.style.display === 'flex') {
+                            modal.style.display = 'none';
+                        }
+                    });
+                }
+            });
+        });
+        
+        // Add some interactive touches
+        document.addEventListener('click', function(e) {
+            if (Math.random() < 0.05) { // 5% chance for subtle feedback
+                playSound(200 + Math.random() * 200, 0.05);
+            }
+        });
+
+        // Auto-save every 30 seconds
+        setInterval(saveGameData, 30000);
+        
+        // Save when page is about to unload
+        window.addEventListener('beforeunload', saveGameData);
+
+        // PWA Install prompt
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            deferredPrompt = e;
+            showMiniCelebration('📱 Tip: You can install this app on your device for easier access!');
+        });
+
+        // Add to home screen functionality
+        function installApp() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        showMiniCelebration('📱 App installed! Find it on your home screen!');
+                    }
+                    deferredPrompt = null;
+                });
+            }
+        }
+    </script>
+</body>
+</html>
